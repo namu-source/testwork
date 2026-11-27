@@ -33,3 +33,11 @@
 ## 4. 참고사항
 
 [홈페이지](https://namu-source.github.io/testwork/)
+
+## 5. 코드처리사항
+```python
+print(hello world!!);
+arr[1,2,3,4,5]
+```
+
+
