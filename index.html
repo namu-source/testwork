@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>학습 아카이브 | Study Notes</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --text-main: #0f172a;
+      --text-sub: #475569;
+      --border: #e2e8f0;
+      --accent: #2563eb;
+      --accent-soft: #eff6ff;
+      --tag-bg: #f1f5f9;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Malgun Gothic", sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      line-height: 1.6;
+    }
+
+    /* 상단 헤더 */
+    header {
+      background-color: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .header-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-main);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    nav {
+      display: flex;
+      gap: 1.25rem;
+      font-size: 0.95rem;
+    }
+
+    nav a {
+      color: var(--text-sub);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    nav a:hover,
+    nav a.active {
+      color: var(--accent);
+    }
+
+    /* 메인 컨테이너 */
+    main {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    /* 히어로 & 검색 영역 */
+    .hero {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .hero h1 {
+      font-size: 1.6rem;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .hero p {
+      color: var(--text-sub);
+      font-size: 0.95rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .search-box {
+      width: 100%;
+      max-width: 480px;
+      padding: 0.65rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .search-box:focus {
+      border-color: var(--accent);
+    }
+
+    /* 카테고리 필터 버튼 */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .filter-btn {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-sub);
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .filter-btn.active {
+      background-color: var(--accent);
+      border-color: var(--accent);
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    /* 학습 노트 그리드 */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .card {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+    }
+
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      font-size: 0.8rem;
+    }
+
+    .badge {
+      background-color: var(--accent-soft);
+      color: var(--accent);
+      font-weight: 600;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+    }
+
+    .date {
+      color: var(--text-sub);
+    }
+
+    .card h2 {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      line-height: 1.4;
+    }
+
+    .card h2 a {
+      color: var(--text-main);
+      text-decoration: none;
+    }
+
+    .card h2 a:hover {
+      color: var(--accent);
+    }
+
+    .card p {
+      color: var(--text-sub);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .tag {
+      background-color: var(--tag-bg);
+      color: var(--text-sub);
+      font-size: 0.78rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    /* 푸터 */
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 1.5rem;
+      color: var(--text-sub);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="logo">DEV<span>.</span>ARCHIVE</a>
+      <nav>
+        <a href="index.html" class="active">전체 노트</a>
+        <a href="#projects">실습 프로젝트</a>
+        <a href="#about">소개</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- 상단 소개 및 검색 -->
+    <section class="hero">
+      <h1>개인 학습 노트 아카이브</h1>
+      <p>전공 이론, 디지털 논리 설계, 소프트웨어 개발 실습 내용을 주제별로 기록하고 정리합니다.</p>
+      <input
+        type="text"
+        id="searchInput"
+        class="search-box"
+        placeholder="제목, 요약 내용, 태그 검색..."
+        aria-label="학습 노트 검색"
+      />
+    </section>
+
+    <!-- 카테고리 필터 -->
+    <section class="filter-bar" aria-label="과목 카테고리 필터">
+      <button class="filter-btn active" data-category="all">전체</button>
+      <button class="filter-btn" data-category="fpga">임베디드 FPGA</button>
+      <button class="filter-btn" data-category="mcu">마이크로컨트롤러</button>
+      <button class="filter-btn" data-category="java">자바프로그래밍</button>
+      <button class="filter-btn" data-category="comm">통신시스템</button>
+      <button class="filter-btn" data-category="ai">AI · 클라우드</button>
+    </section>
+
+    <!-- 노트 카드 목록 -->
+    <section class="grid" id="noteGrid">
+      <article class="card" data-category="fpga">
+        <div>
+          <div class="card-meta">
+            <span class="badge">임베디드 FPGA</span>
+            <span class="date">2026-11-20</span>
+          </div>
+          <h2><a href="notes/fpga-fsm.html">VHDL 유한 상태 머신(FSM) 설계 및 테스트벤치 검증</a></h2>
+          <p>동기식 리셋 기반 상태 전이 구조와 Vivado 시뮬레이션 파형 분석 포인트를 정리했습니다.</p>
+        </div>
+        <div class="tags">
+          <span class="tag">#VHDL</span>
+          <span class="tag">#Vivado</span>
+          <span class="tag">#FSM</span>
+        </div>
+      </article>
+
+      <article class="card" data-category="mcu">
+        <div>
+          <div class="card-meta">
+            <span class="badge">마이크로컨트롤러</span>
+            <span class="date">2026-11-15</span>
+          </div>
+          <h2><a href="notes/mcu-interrupt.html">타이머 인터럽트와 PWM 듀티비 제어 실습</a></h2>
+          <p>레지스터 분주비 계산 방법과 외부 인터럽트 우선순위 처리 시 주의사항을 다룹니다.</p>
+        </div>
+        <div class="tags">
+          <span class="tag">#C언어</span>
+          <span class="tag">#Timer</span>
+          <span class="tag">#PWM</span>
+        </div>
+      </article>
+
+      <article class="card" data-category="java">
+        <div>
+          <div class="card-meta">
+            <span class="badge">자바프로그래밍</span>
+            <span class="date">2026-11-10</span>
+          </div>
+          <h2><a href="notes/java-collection.html">컬렉션 프레임워크와 스트림 API 핵심 패턴</a></h2>
+          <p>List, Map의 시간 복잡도 비교와 람다식을 활용한 데이터 필터링 예제를 정리했습니다.</p>
+        </div>
+        <div class="tags">
+          <span class="tag">#Java</span>
+          <span class="tag">#Stream</span>
+          <span class="tag">#자료구조</span>
+        </div>
+      </article>
+
+      <article class="card" data-category="comm">
+        <div>
+          <div class="card-meta">
+            <span class="badge">통신시스템</span>
+            <span class="date">2026-11-04</span>
+          </div>
+          <h2><a href="notes/comm-modulation.html">AM/FM 변조 원리와 주파수 스펙트럼 분석</a></h2>
+          <p>반송파 변조 지수에 따른 대역폭 변화와 신호 대 잡음비(SNR) 특성을 비교합니다.</p>
+        </div>
+        <div class="tags">
+          <span class="tag">#신호처리</span>
+          <span class="tag">#변조</span>
+          <span class="tag">#스펙트럼</span>
+        </div>
+      </article>
+
+      <article class="card" data-category="ai">
+        <div>
+          <div class="card-meta">
+            <span class="badge">AI · 클라우드</span>
+            <span class="date">2026-10-28</span>
+          </div>
+          <h2><a href="notes/local-llm-gguf.html">로컬 환경 GGUF 양자화 모델 구동 및 메모리 오프로딩</a></h2>
+          <p>양자화 비트 수에 따른 VRAM 점유율과 추론 속도 트레이드오프를 테스트한 기록입니다.</p>
+        </div>
+        <div class="tags">
+          <span class="tag">#LLM</span>
+          <span class="tag">#GGUF</span>
+          <span class="tag">#Vulkan</span>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Personal Study Archive. Built with semantic HTML &amp; CSS.</p>
+  </footer>
+
+  <script>
+    const filterButtons = document.querySelectorAll(".filter-btn");
+    const cards = document.querySelectorAll(".card");
+    const searchInput = document.getElementById("searchInput");
+
+    let currentCategory = "all";
+
+    function filterNotes() {
+      const keyword = searchInput.value.trim().toLowerCase();
+
+      cards.forEach((card) => {
+        const category = card.dataset.category;
+        const text = card.textContent.toLowerCase();
+
+        const matchesCategory = currentCategory === "all" || category === currentCategory;
+        const matchesKeyword = keyword === "" || text.includes(keyword);
+
+        card.style.display = matchesCategory && matchesKeyword ? "flex" : "none";
+      });
+    }
+
+    filterButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        filterButtons.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        currentCategory = btn.dataset.category;
+        filterNotes();
+      });
+    });
+
+    searchInput.addEventListener("input", filterNotes);
+  </script>
+</body>
+</html>
